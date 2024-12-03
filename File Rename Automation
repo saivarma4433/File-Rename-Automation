@@ -1,0 +1,28 @@
+function onEdit(e) {
+  // Trigger the function only when files are uploaded to the specific folder.
+
+  var folderId = 'Your Folder Path; // Replace with your Google Drive folder ID.
+  var folder = DriveApp.getFolderById(folderId);
+
+  var files = folder.getFiles();   // Get all the files
+  
+  // Loop through all files in the folder
+  while (files.hasNext()) {
+    var file = files.next();
+    var fileName = file.getName();
+    
+    // Check if the file has numbers, and if so, rename it
+
+    if (/\d/.test(fileName)) {
+      var currentDate = new Date();
+      var formattedDate = Utilities.formatDate(currentDate, "GMT-5", "MM-dd-yyyy"); 
+    
+      // Remove all numeric characters from the file name
+      
+      var newFileName = fileName.replace(/\d+/g, '').replace(/[-]+/g, ' ').trim() + ' ' + formattedDate;
+
+      // Rename the file
+      file.setName(newFileName);
+    }
+  }
+}
